@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gma.System.MouseKeyHook;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,63 +10,67 @@ using System.Windows.Forms;
 
 namespace NetCopy {
     class WindowHandler {
-        [DllImport("USER32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        [DllImport("USER32.dll")]
-        public static extern IntPtr GetForegroundWindow();
+        private IKeyboardMouseEvents m_GlobalHook;
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        private String ClipboardText = null;
+        private bool sendingPaste = false;
+        private bool winKeyIsPressed = false;
 
-        [DllImport("user32.dll")]
-        public static extern bool PostMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
-
-        public struct RECT {
-            public uint left;
-            public uint top;
-            public uint right;
-            public uint bottom;
+        public WindowHandler() {
+            ClipboardText = Clipboard.GetText();
+            Subscribe();
         }
 
-        public struct LPGUITHREADINFO {
-            public uint cbSize;
-            public uint flags;
-            public IntPtr hwndActive;
-            public IntPtr hwndFocus;
-            public IntPtr hwndCapture;
-            public IntPtr hwndMenuOwner;
-            public IntPtr hwndMoveSize;
-            public IntPtr hwndCapred;
-            public RECT rcCaret;
-        };
+        public void Subscribe() {
+            //Register Global key hook
+            m_GlobalHook = Hook.GlobalEvents();
+            m_GlobalHook.KeyDown += OnKeyDown;
+            m_GlobalHook.KeyUp += OnKeyUp;
+        }
 
-        [DllImport("user32.dll", EntryPoint = "GetGUIThreadInfo")]
-        public static extern bool GetGUIThreadInfo(uint idThread, ref LPGUITHREADINFO threadInfo);
+        private void OnKeyDown(object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.LWin || e.KeyCode == Keys.RWin) {
+                winKeyIsPressed = true;
+            }
+
+            if (e.KeyCode == Keys.C && e.Control) {
+                //TODO: SEND DATA TO NETWORK HERE
+                ClipboardText = Clipboard.GetText();
+            }
+
+            if (e.KeyCode == Keys.V && winKeyIsPressed && !sendingPaste) {
+                sendingPaste = true;
+
+                if (ClipboardText != null) {
+                    PasteData();
+                }
+            }
+
+        }
+
+        private void OnKeyUp(Object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.LWin || e.KeyCode == Keys.RWin) {
+                winKeyIsPressed = false;
+            }
+
+            if (e.KeyCode == Keys.V) {
+                sendingPaste = false;
+            }
+        }
+
+        public void Unsubscribe() {
+            //Removing listener function
+            m_GlobalHook.KeyDown -= OnKeyDown;
+            m_GlobalHook.KeyUp -= OnKeyUp;
+
+            //Fisposing global hook
+            m_GlobalHook.Dispose();
+        }
 
         public void PasteData() {
-            //Get foreground apps
-            IntPtr foregroundWindow = GetForegroundWindow();
-            //IntPtr foregroundWindow = GetFocusedHandle();
-            //SetForegroundWindow(foregroundWindow);
-
             //Send CTRL + V
             SendKeys.Send("^{V}");
-            //SendKeys.SendWait("Y");
-            const uint WM_COMMAND = 0x0111;
-            const uint WM_PASTE = 0x0302;
-            //SendMessage(foregroundWindow, WM_PASTE, IntPtr.Zero, IntPtr.Zero);
-
-            Console.WriteLine("Called");
-            Console.WriteLine("Activehandle " + GetActiveWindowTitle(GetFocusedHandle()));
-        }
-
-        static IntPtr GetFocusedHandle() {
-            LPGUITHREADINFO info = new LPGUITHREADINFO();
-            info.cbSize = (uint)Marshal.SizeOf(info);
-            if (!GetGUIThreadInfo((uint)0, ref info))
-                Console.WriteLine("ERROR! GETTING WINDOWS HANDLE!");
-            return info.hwndFocus;
         }
 
         #region Debug code
