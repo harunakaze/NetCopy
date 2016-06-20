@@ -116,13 +116,12 @@ namespace NetCopy {
                     if (stateObject.sb.Length > 1) {
                         responseMessage = stateObject.sb.ToString();
                     }
+
+                    recieveDone.Set();
                 }
             }
             catch (Exception e) {
                 Console.WriteLine("Receive Callback Error " + e);
-            }
-            finally {
-                recieveDone.Set();
             }
         }
     }
