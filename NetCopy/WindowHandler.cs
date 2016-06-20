@@ -13,16 +13,14 @@ namespace NetCopy {
 
         private IKeyboardMouseEvents m_GlobalHook;
 
-        private String ClipboardText = null;
         private bool sendingPaste = false;
         private bool winKeyIsPressed = false;
 
         public WindowHandler() {
-            ClipboardText = Clipboard.GetText();
             Subscribe();
         }
 
-        public void Subscribe() {
+        private void Subscribe() {
             //Register Global key hook
             m_GlobalHook = Hook.GlobalEvents();
             m_GlobalHook.KeyDown += OnKeyDown;
@@ -36,15 +34,12 @@ namespace NetCopy {
 
             if (e.KeyCode == Keys.C && e.Control) {
                 //TODO: SEND DATA TO NETWORK HERE
-                ClipboardText = Clipboard.GetText();
             }
 
             if (e.KeyCode == Keys.V && winKeyIsPressed && !sendingPaste) {
+                //TODO : REQUEST DATA FROM NETWORK HERE?
                 sendingPaste = true;
-
-                if (ClipboardText != null) {
-                    PasteData();
-                }
+                PasteData();
             }
 
         }
@@ -69,8 +64,18 @@ namespace NetCopy {
         }
 
         public void PasteData() {
+            //Backup clipboard
+            ClipboardData clipboardData = new ClipboardData();
+            clipboardData.BackupData();
+            
+            //TODO: GET DATA FROM SERVER
+            Clipboard.SetText("GET FROM SERVER");
+
             //Send CTRL + V
-            SendKeys.Send("^{V}");
+            SendKeys.SendWait("^{V}");
+
+            //Restore clipboard
+            clipboardData.RestoreData();
         }
 
         #region Debug code
@@ -80,7 +85,6 @@ namespace NetCopy {
         private string GetActiveWindowTitle(IntPtr handle) {
             const int nChars = 256;
             StringBuilder buffer = new StringBuilder(nChars);
-            //IntPtr handle = GetForegroundWindow();
 
             if (GetWindowText(handle, buffer, nChars) > 0)
             {
