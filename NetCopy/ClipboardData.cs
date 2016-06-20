@@ -14,6 +14,8 @@ namespace NetCopy {
         private StringCollection stringCollection = null;
         private Image imageData = null;
         private String textData = null;
+        
+        //TODO: Backup other clipboard data
 
         public void BackupData() {
             if (Clipboard.ContainsAudio())

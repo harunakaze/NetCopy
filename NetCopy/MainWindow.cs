@@ -16,6 +16,9 @@ namespace NetCopy {
         public MainWindow() {
             InitializeComponent();
             windowHandler = new WindowHandler();
+
+            NetworkClient.StartClient();
+
             FormClosing += FormClosingHandler;
         }
 

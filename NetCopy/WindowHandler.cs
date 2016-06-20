@@ -71,6 +71,7 @@ namespace NetCopy {
             //TODO: GET DATA FROM SERVER
             Clipboard.SetText("GET FROM SERVER");
 
+            //TODO: Preferably use other method to do this
             //Send CTRL + V
             SendKeys.SendWait("^{V}");
 
