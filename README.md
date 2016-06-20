@@ -1,4 +1,5 @@
 # NetPaste
 A copy-paste network solutions!
-NetCopy is the client side. (WIP)
-NetPaste is the server side.
+Both is still WIP.
+NetCopy is the client side. https://github.com/harunakaze/NetCopy
+NetPaste is the server side.https://github.com/harunakaze/NetPaste
