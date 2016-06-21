@@ -9,7 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace NetCopy {
-    class WindowHandler : Form {
+    class WindowHandler : NativeWindow {
 
         private IKeyboardMouseEvents m_GlobalHook;
 
@@ -32,6 +32,7 @@ namespace NetCopy {
         
 
         public WindowHandler() {
+            this.CreateHandle(new CreateParams());
             Subscribe();
             clipboardData = new ClipboardData();
             clipboardData.SetClipboardText();
@@ -93,10 +94,8 @@ namespace NetCopy {
         }
 
         private void SendData() {
-            //Task.Factory.StartNew(() => NetworkClient.StartClient());            
-            //NetworkClient.StartClient();
-            //Task clientTask = new Task(() => NetworkClient.StartClient());
-            //clientTask.Start();
+            if (!Clipboard.ContainsText())
+                return;
 
             NetworkClient netClient = new NetworkClient();
 
@@ -104,7 +103,6 @@ namespace NetCopy {
             string data = clipboardData.GetSendedText();
 
             Thread clientThread = new Thread(() => netClient.StartClient(data));
-            clientThread.SetApartmentState(ApartmentState.STA);
             clientThread.Start();
         }
 
@@ -131,11 +129,6 @@ namespace NetCopy {
                     base.WndProc(ref m);
                     break;
             }
-        }
-
-        protected override void Dispose(bool disposing) {
-            ChangeClipboardChain(this.Handle, nextClipboardViewer);
-            base.Dispose(disposing);
         }
 
         #region Debug code
