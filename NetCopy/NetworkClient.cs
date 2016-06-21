@@ -6,9 +6,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace NetCopy {
-    static class NetworkClient {
+    class NetworkClient {
         //NetCopy Port
         private const ushort WorkingPort = 32323;
 
@@ -32,7 +33,9 @@ namespace NetCopy {
                 client.BeginConnect(endPoint, new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
 
-                Send(client, "Sended data<EOF>");
+                string clipboardText = Clipboard.GetText();
+                Console.WriteLine("Clipboard Text : " + clipboardText);
+                Send(client, clipboardText + "<EOF>");
                 sendDone.WaitOne();
 
                 Receive(client);

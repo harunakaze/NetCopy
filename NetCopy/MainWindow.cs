@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NetCopy {
@@ -16,8 +15,6 @@ namespace NetCopy {
         public MainWindow() {
             InitializeComponent();
             windowHandler = new WindowHandler();
-
-            NetworkClient.StartClient();
 
             FormClosing += FormClosingHandler;
         }

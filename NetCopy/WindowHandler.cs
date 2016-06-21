@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace NetCopy {
@@ -15,6 +15,9 @@ namespace NetCopy {
 
         private bool sendingPaste = false;
         private bool winKeyIsPressed = false;
+
+
+        private Thread clientThread;
 
         public WindowHandler() {
             Subscribe();
@@ -34,6 +37,7 @@ namespace NetCopy {
 
             if (e.KeyCode == Keys.C && e.Control) {
                 //TODO: SEND DATA TO NETWORK HERE
+                SendData();
             }
 
             if (e.KeyCode == Keys.V && winKeyIsPressed && !sendingPaste) {
@@ -63,7 +67,7 @@ namespace NetCopy {
             m_GlobalHook.Dispose();
         }
 
-        public void PasteData() {
+        private void PasteData() {
             //Backup clipboard
             ClipboardData clipboardData = new ClipboardData();
             clipboardData.BackupData();
@@ -77,6 +81,20 @@ namespace NetCopy {
 
             //Restore clipboard
             clipboardData.RestoreData();
+        }
+
+        private void SendData() {
+            //Task.Factory.StartNew(() => NetworkClient.StartClient());            
+            //NetworkClient.StartClient();
+            //Task clientTask = new Task(() => NetworkClient.StartClient());
+            //clientTask.Start();
+
+            if(clientThread != null)
+                clientThread.Abort();
+
+            clientThread = new Thread(() => NetworkClient.StartClient());
+            clientThread.SetApartmentState(ApartmentState.STA);
+            clientThread.Start();
         }
 
         #region Debug code
