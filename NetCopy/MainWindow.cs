@@ -13,6 +13,7 @@ namespace NetCopy {
         private WindowHandler windowHandler;
 
         public MainWindow() {
+            Console.WriteLine("================================= NEW PROCESS =================================");
             InitializeComponent();
             windowHandler = new WindowHandler();
 

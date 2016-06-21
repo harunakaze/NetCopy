@@ -13,15 +13,15 @@ namespace NetCopy {
         //NetCopy Port
         private const ushort WorkingPort = 32323;
 
-        private static ManualResetEvent connectDone = new ManualResetEvent(false);
-        private static ManualResetEvent sendDone = new ManualResetEvent(false);
-        private static ManualResetEvent recieveDone = new ManualResetEvent(false);
+        private ManualResetEvent connectDone = new ManualResetEvent(false);
+        private ManualResetEvent sendDone = new ManualResetEvent(false);
+        private ManualResetEvent recieveDone = new ManualResetEvent(false);
 
         //TODO: Generalize this
         //Recieved data
-        private static String responseMessage = String.Empty;
+        private String responseMessage = String.Empty;
         
-        public static void StartClient() {
+        public void StartClient(String data) {
             Console.WriteLine("Starting network client...");
 
             try {
@@ -33,9 +33,7 @@ namespace NetCopy {
                 client.BeginConnect(endPoint, new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
 
-                string clipboardText = Clipboard.GetText();
-                Console.WriteLine("Clipboard Text : " + clipboardText);
-                Send(client, clipboardText + "<EOF>");
+                Send(client, data);
                 sendDone.WaitOne();
 
                 Receive(client);
@@ -52,7 +50,7 @@ namespace NetCopy {
             }
         }
 
-        private static void ConnectCallback(IAsyncResult ar) {
+        private void ConnectCallback(IAsyncResult ar) {
             try {
                 Socket client = (Socket) ar.AsyncState;
 
@@ -69,13 +67,13 @@ namespace NetCopy {
         }
 
         //TODO: Generalize this
-        private static void Send(Socket client, String data) {
+        private void Send(Socket client, String data) {
             byte[] byteData = Encoding.ASCII.GetBytes(data);
 
             client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), client);
         }
 
-        private static void SendCallback(IAsyncResult ar) {
+        private void SendCallback(IAsyncResult ar) {
             try {
                 Socket client = (Socket)ar.AsyncState;
 
@@ -91,7 +89,7 @@ namespace NetCopy {
             }
         }
 
-        private static void Receive(Socket client) {
+        private void Receive(Socket client) {
             try {
                 StateObject state = new StateObject();
                 state.workSocket = client;
@@ -103,7 +101,7 @@ namespace NetCopy {
             }
         }
 
-        private static void ReceiveCallback(IAsyncResult ar) {
+        private void ReceiveCallback(IAsyncResult ar) {
             try {
                 StateObject stateObject = (StateObject)ar.AsyncState;
                 Socket client = stateObject.workSocket;
