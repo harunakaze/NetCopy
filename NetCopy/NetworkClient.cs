@@ -16,21 +16,23 @@ namespace NetCopy {
         private ManualResetEvent sendDone = new ManualResetEvent(false);
         private ManualResetEvent recieveDone = new ManualResetEvent(false);
 
+        private bool serverIsOffline = false;
+
         //TODO: Generalize this
         //Recieved data
         private String responseMessage = String.Empty;
         
-        public void StartClient(String data) {
+        public void StartClient(String data, out String outMessage) {
             Console.WriteLine("Starting network client...");
-
+            outMessage = null;
             try {
-                IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+                IPAddress ipAddress = IPAddress.Parse("192.168.1.127");
                 IPEndPoint endPoint = new IPEndPoint(ipAddress, WorkingPort);
 
                 Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 client.BeginConnect(endPoint, new AsyncCallback(ConnectCallback), client);
-                connectDone.WaitOne();
+                connectDone.WaitOne();                    
 
                 Send(client, data);
                 sendDone.WaitOne();
@@ -38,6 +40,7 @@ namespace NetCopy {
                 Receive(client);
                 recieveDone.WaitOne();
 
+                outMessage = responseMessage;
                 Console.WriteLine("Response Recieved {0}", responseMessage);
 
                 client.Shutdown(SocketShutdown.Both);
@@ -56,6 +59,10 @@ namespace NetCopy {
                 client.EndConnect(ar);
 
                 Console.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
+            }
+            catch (SocketException e) {
+                Console.WriteLine("Server is offline : " + e);
+                serverIsOffline = true;
             }
             catch (Exception e) {
                 Console.WriteLine("Connect Callback Error " + e);

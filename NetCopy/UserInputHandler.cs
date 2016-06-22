@@ -5,18 +5,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace NetCopy {
-    class WindowHandler : NativeWindow {
+    class UserInputHandler : NativeWindow {
 
         private IKeyboardMouseEvents m_GlobalHook;
 
         private bool sendingPaste = false;
         private bool winKeyIsPressed = false;
 
-        ClipboardData clipboardData;
+        private NetCopy netCopy;
 
         //Clipboard listener
         [DllImport("User32.dll")]
@@ -31,11 +30,13 @@ namespace NetCopy {
         private IntPtr nextClipboardViewer;
         
 
-        public WindowHandler() {
+        public UserInputHandler(NetCopy instance) {
             this.CreateHandle(new CreateParams());
+
+            netCopy = instance;
+
             Subscribe();
-            clipboardData = new ClipboardData();
-            clipboardData.SetClipboardText();
+
             nextClipboardViewer = (IntPtr)SetClipboardViewer((int)this.Handle);
         }
 
@@ -54,7 +55,7 @@ namespace NetCopy {
             if (e.KeyCode == Keys.V && winKeyIsPressed && !sendingPaste) {
                 //TODO : REQUEST DATA FROM NETWORK HERE?
                 sendingPaste = true;
-                PasteData();
+                netCopy.PasteData();
             }
 
         }
@@ -78,42 +79,14 @@ namespace NetCopy {
             m_GlobalHook.Dispose();
         }
 
-        private void PasteData() {
-            //Backup clipboard
-            clipboardData.BackupData();
-            
-            //TODO: GET DATA FROM SERVER
-            Clipboard.SetText("GET FROM SERVER");
-
-            //TODO: Preferably use other method to do this
-            //Send CTRL + V
-            SendKeys.SendWait("^{V}");
-
-            //Restore clipboard
-            clipboardData.RestoreData();
-        }
-
-        private void SendData() {
-            if (!Clipboard.ContainsText())
-                return;
-
-            NetworkClient netClient = new NetworkClient();
-
-            clipboardData.SetClipboardText();
-            string data = clipboardData.GetSendedText();
-
-            Thread clientThread = new Thread(() => netClient.StartClient(data));
-            clientThread.Start();
-        }
-
         protected override void WndProc(ref System.Windows.Forms.Message m) {
             const int WM_DRAWCLIPBOARD = 0x308;
             const int WM_CHANGECBCHAIN = 0x030D;
 
             switch (m.Msg) {
                 case WM_DRAWCLIPBOARD:
-                    
-                    SendData();
+
+                    netCopy.SendData();
 
                     SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
                     break;

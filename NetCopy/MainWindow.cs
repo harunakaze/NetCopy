@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialSkin.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,13 +10,16 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace NetCopy {
-    public partial class MainWindow : Form {
-        private WindowHandler windowHandler;
+    public partial class MainWindow : MaterialForm {
+        private NetCopy netCopy;
+        private UserInputHandler windowHandler;
 
         public MainWindow() {
-            Console.WriteLine("================================= NEW PROCESS =================================");
+            Console.WriteLine("\n================================= NEW PROCESS =================================\n");
             InitializeComponent();
-            windowHandler = new WindowHandler();
+
+            netCopy = new NetCopy();
+            windowHandler = new UserInputHandler(netCopy);
 
             FormClosing += FormClosingHandler;
         }
