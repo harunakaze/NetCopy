@@ -13,7 +13,11 @@ namespace NetPaste {
         public MainWindow() {
             InitializeComponent();
 
-            NetworkServer.StartListening();
+            //Task.Factory.StartNew(() => NetworkServer.StartListening());
+            //NetworkServer.StartListening();
+
+            Task serverTask = new Task(() => NetworkServer.StartListening());
+            serverTask.Start();
         }
     }
 }
