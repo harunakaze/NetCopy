@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace NetCopy {
     class ServerData {
         private const string REQUEST_QUERY = "!@#REQUEST_DATA#@!<!@#!@#)?>";
+        private const int REQUST_TIMEOUT_MS = 1500;
         private string pasteData;
 
         public ServerData() {
@@ -23,7 +24,7 @@ namespace NetCopy {
             clientThread.Start();
 
             //TODO: Find other method of waiting this process, so it make a responsive impression?
-            clientThread.Join();
+            clientThread.Join(REQUST_TIMEOUT_MS);
 
             Console.WriteLine("DONE REQUESTING DATA, DATA : " + pasteData);
 
