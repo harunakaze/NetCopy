@@ -8,11 +8,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace NetPaste {
-    class NetworkServer {
+    static class NetworkServer {
         //NetCopy Port
         private const ushort WorkingPort = 32323;
 
         private static ManualResetEvent allDone = new ManualResetEvent(false);
+
+        private static StringBuilder iniDatanya = new StringBuilder();
 
         public static void StartListening() {
             Console.WriteLine("Server StartListening...");
@@ -56,27 +58,45 @@ namespace NetPaste {
         }
 
         private static void ReadCallback(IAsyncResult ar) {
-            //TODO: Generalize this
-            String content = String.Empty;
+            try {
+                //TODO: Generalize this
+                String content = String.Empty;
 
-            StateObject state = (StateObject)ar.AsyncState;
-            Socket handler = state.workSocket;
+                StateObject state = (StateObject)ar.AsyncState;
+                Socket handler = state.workSocket;
 
-            int byteRead = handler.EndReceive(ar);
+                int byteRead = handler.EndReceive(ar);
 
-            if (byteRead > 0) {
-                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, byteRead));
+                if (byteRead > 0) {
+                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, byteRead));
 
-                content = state.sb.ToString();
+                    content = state.sb.ToString();
 
-                if (content.IndexOf("<EOF>") > -1) {
-                    Console.WriteLine("Read {0} byte from socket. \n Data : {1}", content.Length, content);
 
-                    Send(handler, content);
+                    if (content.IndexOf("<!@#!@#)?>") > -1) {
+                        Console.WriteLine("Read {0} byte from socket. \n Data : {1}", content.Length, content);
+
+                        //Client request data
+                        if (content.Equals("!@#REQUEST_DATA#@!<!@#!@#)?>")) {
+                            Console.WriteLine("Read {0} byte from socket. \n Data : {1}", content.Length, content);
+
+                            Send(handler, iniDatanya.ToString());
+                        }
+                        else {
+                            iniDatanya.Clear();
+                            iniDatanya.Append(content.Substring(0, content.IndexOf("<!@#!@#)?>")));
+
+                            //Recieved copy data, tell client success
+                            Send(handler, content);
+                        }
+                    }
+                    else {
+                        handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+                    }
                 }
-                else {
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
-                }
+            }
+            catch (Exception e) {
+                Console.WriteLine("Read Callback Error " + e);
             }
         }
 
