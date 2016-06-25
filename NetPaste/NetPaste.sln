@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCopy", "NetCopy\NetCopy.csproj", "{DE8510CE-C5FB-4C1B-8137-73A7D317F960}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLibrary", "NetLibrary\NetLibrary.csproj", "{FACE8D7B-7C09-4759-B72E-15555431710F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPaste", "NetPaste\NetPaste.csproj", "{952CDD52-501E-4EE9-87F0-8BCB585EDEA4}"
 EndProject
 Global
@@ -15,14 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DE8510CE-C5FB-4C1B-8137-73A7D317F960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE8510CE-C5FB-4C1B-8137-73A7D317F960}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE8510CE-C5FB-4C1B-8137-73A7D317F960}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE8510CE-C5FB-4C1B-8137-73A7D317F960}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FACE8D7B-7C09-4759-B72E-15555431710F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FACE8D7B-7C09-4759-B72E-15555431710F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FACE8D7B-7C09-4759-B72E-15555431710F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FACE8D7B-7C09-4759-B72E-15555431710F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{952CDD52-501E-4EE9-87F0-8BCB585EDEA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{952CDD52-501E-4EE9-87F0-8BCB585EDEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{952CDD52-501E-4EE9-87F0-8BCB585EDEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
