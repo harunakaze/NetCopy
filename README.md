@@ -1,6 +1,8 @@
 # NetCopy
 A copy-paste network solutions!
 
+[![Build status](https://ci.appveyor.com/api/projects/status/f9qhtg5i3e85tsul?svg=true)](https://ci.appveyor.com/project/harunakaze/netcopy)
+
 Both is still WIP.
 
 NetCopy is the client side. https://github.com/harunakaze/NetCopy
