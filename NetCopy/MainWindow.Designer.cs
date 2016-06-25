@@ -31,7 +31,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "Net Client";
             this.ResumeLayout(false);
 
         }
