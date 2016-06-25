@@ -5,8 +5,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCopy {
-    class StateObject {
+namespace NetLibrary {
+    public class StateObject {
         public Socket workSocket = null;
 
         public const int BufferSize = 256;

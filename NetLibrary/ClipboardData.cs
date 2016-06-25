@@ -9,8 +9,8 @@ using System.Collections.Specialized;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace NetCopy {
-    class ClipboardData {
+namespace NetLibrary {
+    public class ClipboardData {
         private const string EOF_KEY = "<!@#!@#)?>";
         private string currentClipboardText;
 

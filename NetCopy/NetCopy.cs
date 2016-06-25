@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NetLibrary;
 
 namespace NetCopy {
     class NetCopy {
-
         private ServerData serverData;
 
         private ClipboardData clipboardData;
