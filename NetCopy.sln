@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCopy", "NetCopy\NetCopy.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLibrary", "NetLibrary\NetLibrary.csproj", "{FACE8D7B-7C09-4759-B72E-15555431710F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPaste", "..\NetPaste\NetPaste\NetPaste.csproj", "{952CDD52-501E-4EE9-87F0-8BCB585EDEA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPaste", "NetPaste\NetPaste.csproj", "{952CDD52-501E-4EE9-87F0-8BCB585EDEA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
