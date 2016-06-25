@@ -72,7 +72,7 @@ namespace NetPaste {
 
                     content = state.sb.ToString();
 
-
+                    //TODO: Refactor this
                     if (content.IndexOf("<!@#!@#)?>") > -1) {
                         Console.WriteLine("Read {0} byte from socket. \n Data : {1}", content.Length, content);
 
