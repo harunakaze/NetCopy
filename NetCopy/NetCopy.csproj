@@ -61,7 +61,7 @@
     <Compile Include="NetworkClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerData.cs" />
+    <Compile Include="ServerRequest.cs" />
     <Compile Include="ServerOfflineException.cs" />
     <Compile Include="UserInputHandler.cs" />
     <EmbeddedResource Include="MainWindow.resx">
