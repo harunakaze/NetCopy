@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NetLibrary;
+using System.Windows.Forms;
 
 namespace NetCopy {
     class NetworkClient {
@@ -17,17 +18,15 @@ namespace NetCopy {
         private ManualResetEvent sendDone = new ManualResetEvent(false);
         private ManualResetEvent recieveDone = new ManualResetEvent(false);
 
-        private bool serverIsOffline = false;
-
         //TODO: Generalize this
         //Recieved data
         private String responseMessage = String.Empty;
         
-        public void StartClient(String data, out String outMessage) {
+        public void StartClient(IPAddress ipAddress, String data, out String outMessage) {
             Console.WriteLine("Starting network client...");
             outMessage = null;
             try {
-                IPAddress ipAddress = IPAddress.Parse("192.168.1.127");
+                //IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
                 IPEndPoint endPoint = new IPEndPoint(ipAddress, WorkingPort);
 
                 Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -63,7 +62,7 @@ namespace NetCopy {
             }
             catch (SocketException e) {
                 Console.WriteLine("Server is offline : " + e);
-                serverIsOffline = true;
+                MessageBox.Show(e.Message, "Server is offline", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception e) {
                 Console.WriteLine("Connect Callback Error " + e);

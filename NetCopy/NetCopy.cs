@@ -6,21 +6,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NetLibrary;
+using System.Net;
 
 namespace NetCopy {
     class NetCopy {
-        private ServerData serverData;
-
+        private ServerRequest serverData;
         private ClipboardData clipboardData;
 
+        private IPAddress ipAddress;
         private bool isPasting = false;
 
-        public NetCopy() {
+        public NetCopy(IPAddress ipAddress) {
+            this.ipAddress = ipAddress;
+
             clipboardData = new ClipboardData();
             clipboardData.SetClipboardText();
             SendData();
 
-            serverData = new ServerData();
+            serverData = new ServerRequest(this.ipAddress);
         }
 
         public void PasteData() {
@@ -44,6 +47,9 @@ namespace NetCopy {
 
                 isPasting = false;
             }
+            catch (ServerOfflineException error) {
+                MessageBox.Show(error.Message, "Server is offline", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception e) {
                 Console.WriteLine("Paste Data Error : " + e);
             }
@@ -63,7 +69,7 @@ namespace NetCopy {
             string data = clipboardData.GetSendedText();
             string responseMessage = null;
 
-            Thread clientThread = new Thread(() => netClient.StartClient(data, out responseMessage));
+            Thread clientThread = new Thread(() => netClient.StartClient(ipAddress, data, out responseMessage));
             clientThread.Start();
         }
     }
