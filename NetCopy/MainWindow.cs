@@ -95,8 +95,6 @@ namespace NetCopy {
             FormClosing -= FormClosingHandler;
 
             serverStatus = ServerStatus.DISCONNECTED;
-
-            //GC.Collect();
         }
 
     }

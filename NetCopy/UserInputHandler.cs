@@ -80,6 +80,7 @@ namespace NetCopy {
             //Disposing global hook
             m_GlobalHook.Dispose();
 
+            //Release WndProc listener
             ReleaseHandle();
         }
 
