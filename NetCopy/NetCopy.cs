@@ -43,6 +43,7 @@ namespace NetCopy {
 
                 //TODO: Preferably use other method to do this
                 //Send CTRL + V
+                //NOTE: This may cause key up, or down call related bug
                 SendKeys.SendWait("^{V}");
 
                 //Restore clipboard

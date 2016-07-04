@@ -65,6 +65,8 @@ namespace NetCopy {
                 winKeyIsPressed = false;
             }
 
+            //NOTE: The CTRL + V in NetCopy.PasteData() cause a bug here
+            //That function call OnKeyUp() unintentionally, fix that
             if (e.KeyCode == Keys.V) {
                 sendingPaste = false;
             }
