@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace NetCopy {
     public class ServerOfflineException : Exception {
         public ServerOfflineException() 
-            : base("Server is offline or not available.") {
+            : base("Server is offline or is not available.") {
         }
     }
 }

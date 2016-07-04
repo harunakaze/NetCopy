@@ -62,7 +62,7 @@ namespace NetCopy {
             }
             catch (SocketException e) {
                 Console.WriteLine("Server is offline : " + e);
-                MessageBox.Show(e.Message, "Server is offline", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(e.Message, "Server is offline", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception e) {
                 Console.WriteLine("Connect Callback Error " + e);
