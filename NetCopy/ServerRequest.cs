@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace NetCopy {
     class ServerRequest {
-        private const string REQUEST_QUERY = "!@#REQUEST_DATA#@!<!@#!@#)?>";
-        private const string CHECK_QUERY = "!@#CHECK_DATA#@!<!@#!@#)?>";
+        private const string REQUEST_FOR_DATA_QUERY = "!@#REQUEST_DATA#@!<!@#!@#)?>";
+        private const string CHECK_SERVER_QUERY = "!@#CHECK_DATA#@!<!@#!@#)?>";
         private const int REQUST_TIMEOUT_MS = 200;
         private IPAddress serverIP;
 
@@ -17,11 +17,11 @@ namespace NetCopy {
             this.serverIP = serverIP;
             //RequestServerData();
             //Check server is online
-            MakeRequest(CHECK_QUERY);
+            MakeRequest(CHECK_SERVER_QUERY);
         }
 
         public string RequestServerData() {
-            return MakeRequest(REQUEST_QUERY);
+            return MakeRequest(REQUEST_FOR_DATA_QUERY);
         }
 
         private string MakeRequest(string request) {
