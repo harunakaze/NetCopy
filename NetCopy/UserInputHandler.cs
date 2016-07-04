@@ -75,7 +75,7 @@ namespace NetCopy {
             m_GlobalHook.KeyDown -= OnKeyDown;
             m_GlobalHook.KeyUp -= OnKeyUp;
 
-            //Fisposing global hook
+            //Disposing global hook
             m_GlobalHook.Dispose();
         }
 
