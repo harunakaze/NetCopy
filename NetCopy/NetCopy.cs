@@ -24,7 +24,7 @@ namespace NetCopy {
 
             clipboardData = new ClipboardData();
             clipboardData.SetClipboardText();
-            SendData();
+            //SendData();
 
             serverData = new ServerRequest(this.ipAddress);
         }
@@ -60,6 +60,7 @@ namespace NetCopy {
             }
         }
 
+        //Send clipboard text to server
         public void SendData() {
             if (!Clipboard.ContainsText())
                 return;

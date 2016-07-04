@@ -15,7 +15,9 @@ namespace NetCopy {
 
         public ServerRequest(IPAddress serverIP) {
             this.serverIP = serverIP;
-            RequestServerData();
+            //RequestServerData();
+            //Check server is online
+            MakeRequest(CHECK_QUERY);
         }
 
         public string RequestServerData() {
@@ -23,7 +25,7 @@ namespace NetCopy {
         }
 
         private string MakeRequest(string request) {
-            Console.WriteLine("    \nCHECKING SERVER...");
+            Console.WriteLine("    \nREQUESTING FROM SERVER... REQUEST QUERY : {0}", request);
 
             NetworkClient netClient = new NetworkClient();
 
