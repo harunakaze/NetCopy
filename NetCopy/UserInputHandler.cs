@@ -77,9 +77,11 @@ namespace NetCopy {
 
             //Disposing global hook
             m_GlobalHook.Dispose();
+
+            ReleaseHandle();
         }
 
-        protected override void WndProc(ref System.Windows.Forms.Message m) {
+        protected override void WndProc(ref Message m) {
             const int WM_DRAWCLIPBOARD = 0x308;
             const int WM_CHANGECBCHAIN = 0x030D;
 
