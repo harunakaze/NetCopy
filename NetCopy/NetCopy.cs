@@ -16,8 +16,11 @@ namespace NetCopy {
         private IPAddress ipAddress;
         private bool isPasting = false;
 
-        public NetCopy(IPAddress ipAddress) {
+        private MainWindow mainWindow;
+
+        public NetCopy(IPAddress ipAddress, MainWindow mainWindow) {
             this.ipAddress = ipAddress;
+            this.mainWindow = mainWindow;
 
             clipboardData = new ClipboardData();
             clipboardData.SetClipboardText();
@@ -49,6 +52,7 @@ namespace NetCopy {
             }
             catch (ServerOfflineException error) {
                 MessageBox.Show(error.Message, "Server is offline", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mainWindow.ResetForm();
             }
             catch (Exception e) {
                 Console.WriteLine("Paste Data Error : " + e);

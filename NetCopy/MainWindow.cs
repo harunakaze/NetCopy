@@ -58,10 +58,24 @@ namespace NetCopy {
             string ipAddressString = textBoxIP.Text;
             IPAddress ipAddress = IPAddress.Parse(ipAddressString);
 
-            netCopy = new NetCopy(ipAddress);
+            netCopy = new NetCopy(ipAddress, this);
 
             windowHandler = new UserInputHandler(netCopy);
             FormClosing += FormClosingHandler;
+        }
+
+        public void ResetForm() {
+            textBoxIP.Text = "";
+            textBoxIP.Enabled = true;
+
+            buttonConnect.Text = "Connect";
+            buttonConnect.Enabled = true;
+
+            FormClosingHandler(this, new FormClosingEventArgs(CloseReason.None, false));
+
+            netCopy = null;
+            windowHandler = null;
+            FormClosing -= FormClosingHandler;
         }
 
     }
