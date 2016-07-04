@@ -15,9 +15,19 @@ namespace NetCopy {
         private NetCopy netCopy;
         private UserInputHandler windowHandler;
 
+
+        private enum ServerStatus {
+            DISCONNECTED,
+            CONNECTED
+        }
+
+        private ServerStatus serverStatus;
+
         public MainWindow() {
             Console.WriteLine("\n================================= NEW PROCESS =================================\n");
             InitializeComponent();
+
+            serverStatus = ServerStatus.DISCONNECTED;
         }
 
         private void FormClosingHandler(object sender, FormClosingEventArgs e) {
@@ -28,14 +38,21 @@ namespace NetCopy {
         }
 
         private void buttonConnect_Click(object sender, EventArgs e) {
+            if (serverStatus == ServerStatus.CONNECTED) {
+                ResetForm();
+                serverStatus = ServerStatus.DISCONNECTED;
+                return;
+            }
+
             try {
                 TryConnect();
 
                 //UI Handling
                 textBoxIP.Enabled = false;
 
-                buttonConnect.Text = "Connected!";
-                buttonConnect.Enabled = false;
+                buttonConnect.Text = "Disconnect";
+                serverStatus = ServerStatus.CONNECTED;
+                //buttonConnect.Enabled = false;
             }
             catch (FormatException error) {
                 MessageBox.Show(error.Message, "Invalid Server IP", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -69,13 +86,17 @@ namespace NetCopy {
             textBoxIP.Enabled = true;
 
             buttonConnect.Text = "Connect";
-            buttonConnect.Enabled = true;
+            //buttonConnect.Enabled = true;
 
             FormClosingHandler(this, new FormClosingEventArgs(CloseReason.None, false));
 
             netCopy = null;
             windowHandler = null;
             FormClosing -= FormClosingHandler;
+
+            serverStatus = ServerStatus.DISCONNECTED;
+
+            //GC.Collect();
         }
 
     }
