@@ -15,45 +15,10 @@ namespace NetCopy {
 
         public ServerRequest(IPAddress serverIP) {
             this.serverIP = serverIP;
-            //ServerIsAvailable();
             RequestServerData();
         }
 
-        //private void ServerIsAvailable() {
-        //    Console.WriteLine("    \nCHECKING SERVER...");
-
-        //    NetworkClient netClient = new NetworkClient();
-
-        //    string serverResponse = null;
-
-        //    Thread clientThread = new Thread(() => netClient.StartClient(serverIP, CHECK_QUERY, out serverResponse));
-        //    clientThread.Start();
-
-        //    //TODO: Find other method of waiting this process, so it make a responsive impression?
-        //    clientThread.Join(REQUST_TIMEOUT_MS);
-
-        //    if (serverResponse == null) {
-        //        throw new ServerOfflineException();
-        //    }
-        //}
-
         public string RequestServerData() {
-            //Console.WriteLine("    \nREQUESTING DATA...");
-
-            //NetworkClient netClient = new NetworkClient();
-
-            //string pasteData = null;
-
-            //Thread clientThread = new Thread(() => netClient.StartClient(serverIP, REQUEST_QUERY, out pasteData));
-            //clientThread.Start();
-
-            ////TODO: Find other method of waiting this process, so it make a responsive impression?
-            //clientThread.Join(REQUST_TIMEOUT_MS);
-
-            //Console.WriteLine("DONE REQUESTING DATA, DATA : " + pasteData);
-
-            //return pasteData;
-
             return MakeRequest(REQUEST_QUERY);
         }
 
